@@ -1,21 +1,30 @@
-import { Controller, Get, Post, Param, Body } from '@nestjs/common';
-import { Observable, of } from 'rxjs';
-import { CreateCatDto } from './dto';
+import { Controller, Post, Body, Get, Query, Param, Put, Delete } from '@nestjs/common';
+import { CreateCatDto, ListAllEntities } from './dto';
 
 @Controller('cats')
 export class CatsController {
-    @Get(':id')
-    findOne(@Param('id') id: string): string {
-        return `This action returns a #${id} cat`
+    @Post()
+    create(@Body() createCatDto: CreateCatDto) {
+        return  `This action adds a new cat: name ${createCatDto.name} , age ${createCatDto.age} , breed ${createCatDto.breed}`;
     }
 
     @Get()
-    finally(): Observable<any[]> {
-        return of([])
+    findAll(@Query() query: ListAllEntities) {
+        return `This action returns all cats (limit: ${query.limit} items)`;
     }
 
-    @Post()
-    async create(@Body() createCatDto: CreateCatDto) {
-        return 'This action adds a new cat'
+    @Get(':id')
+    findOne(@Param('id') id: string) {
+        return `This action returns a #${id} cat`;
+    }
+
+    @Put(':id')
+    update(@Param('id') id: string) {
+        return `This action updates a #${id} cat`;
+    }
+
+    @Delete(':id')
+    remove(@Param('id') id: string) {
+        return `This action remove a #${id} cat`;
     }
 }
